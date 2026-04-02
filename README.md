@@ -65,4 +65,4 @@ Run in the project locally.
 
 Run a production build into `./public`. The result is ready to be put on any static hosting you prefer.
 
-trigger pipeline
+trigger pipeline 2
