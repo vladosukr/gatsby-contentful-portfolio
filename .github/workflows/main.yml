@@ -9,26 +9,43 @@ jobs:
   test-runner:
     runs-on: generic-runner  # ← Your scale set name
     steps:
-      - name: Check runner info
+      - name: 🚀 Runner info
         run: |
-          echo "Runner name: $RUNNER_NAME"
-          echo "Runner OS: $RUNNER_OS"
-          echo "Runner arch: $RUNNER_ARCH"
-          hostname
+          echo "=================================="
+          echo "🏃 Runner name: $RUNNER_NAME"
+          echo "💻 Runner OS: $RUNNER_OS"
+          echo "🏗️  Runner arch: $RUNNER_ARCH"
+          echo "📦 Hostname: $(hostname)"
+          echo "=================================="
 
-      - name: Test kubectl access
+      - name: 🎯 Long-running task (2 minutes)
         run: |
+          echo "Starting long task at $(date)"
+          for i in {1..24}; do
+            echo "⏱️  Step $i/24 - Processing... ($(date +%H:%M:%S))"
+            sleep 5
+          done
+          echo "✅ Task completed at $(date)"
+
+      - name: ☸️  Check Kubernetes access
+        run: |
+          echo "Checking K8s cluster..."
           kubectl version --client
           kubectl get nodes
+          kubectl get pods -n github-runners
 
-      - name: Check AWS credentials
+      - name: 🔍 Check AWS credentials
         run: |
-          aws sts get-caller-identity
+          echo "Checking AWS access..."
+          aws sts get-caller-identity || echo "⚠️  AWS credentials not configured"
 
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Simple test
+      - name: 🎉 Final test
         run: |
-          echo "Hello from self-hosted runner!"
-          date
+          echo "=================================="
+          echo "✅ All tests passed!"
+          echo "📍 Running on: $(hostname)"
+          echo "⏰ Finished at: $(date)"
+          echo "=================================="
