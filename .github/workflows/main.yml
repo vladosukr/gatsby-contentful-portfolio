@@ -1,51 +1,51 @@
 name: Test Self-Hosted Runner
 
 on:
-  workflow_dispatch:  # Manual trigger
-  push:
-    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
-  test-runner:
-    runs-on: generic-runner  # ← Your scale set name
+  long-running-test:
+    runs-on: generic-runner
+    timeout-minutes: 10
+
     steps:
-      - name: 🚀 Runner info
+      - name: Step 1 - Start
         run: |
-          echo "=================================="
-          echo "🏃 Runner name: $RUNNER_NAME"
-          echo "💻 Runner OS: $RUNNER_OS"
-          echo "🏗️  Runner arch: $RUNNER_ARCH"
-          echo "📦 Hostname: $(hostname)"
-          echo "=================================="
+          echo "=========================================="
+          echo "🚀 JOB STARTED at $(date)"
+          echo "Runner: $RUNNER_NAME"
+          echo "Hostname: $(hostname)"
+          echo "=========================================="
+          sleep 5
 
-      - name: 🎯 Long-running task (2 minutes)
+      - name: Step 2 - Sleep 30s
         run: |
-          echo "Starting long task at $(date)"
-          for i in {1..24}; do
-            echo "⏱️  Step $i/24 - Processing... ($(date +%H:%M:%S))"
-            sleep 5
-          done
-          echo "✅ Task completed at $(date)"
+          echo "⏱️  Sleeping for 30 seconds..."
+          sleep 30
+          echo "✅ Step 2 complete at $(date)"
 
-      - name: ☸️  Check Kubernetes access
+      - name: Step 3 - Sleep 30s
         run: |
-          echo "Checking K8s cluster..."
-          kubectl version --client
-          kubectl get nodes
-          kubectl get pods -n github-runners
+          echo "⏱️  Sleeping for 30 seconds..."
+          sleep 30
+          echo "✅ Step 3 complete at $(date)"
 
-      - name: 🔍 Check AWS credentials
+      - name: Step 4 - Sleep 30s
         run: |
-          echo "Checking AWS access..."
-          aws sts get-caller-identity || echo "⚠️  AWS credentials not configured"
+          echo "⏱️  Sleeping for 30 seconds..."
+          sleep 30
+          echo "✅ Step 4 complete at $(date)"
 
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🎉 Final test
+      - name: Step 5 - Sleep 30s
         run: |
-          echo "=================================="
-          echo "✅ All tests passed!"
-          echo "📍 Running on: $(hostname)"
-          echo "⏰ Finished at: $(date)"
-          echo "=================================="
+          echo "⏱️  Sleeping for 30 seconds..."
+          sleep 30
+          echo "✅ Step 5 complete at $(date)"
+
+      - name: Step 6 - Final
+        run: |
+          echo "=========================================="
+          echo "✅ ALL STEPS COMPLETED"
+          echo "Total runtime: ~2 minutes"
+          echo "Finished at: $(date)"
+          echo "=========================================="
